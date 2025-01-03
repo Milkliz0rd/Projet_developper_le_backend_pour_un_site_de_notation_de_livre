@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const crypto = require("crypto");
+const uniqueValidator = require("mongoose-unique-validator");
 
 const mykey = crypto.createCipher("aes-128-cbc", "mypassword");
 
@@ -22,13 +23,15 @@ const userSchema = mongoose.Schema({
   },
 });
 
-userSchema.pre("save", function () {
-  console.log("presave", this);
-  const mystr = mykey.update("abc", "utf8", "hex");
-  mystr += mykey.final("hex");
+userSchema.plugin(uniqueValidator);
 
-  console.log(mystr);
-  this.password = mystr;
-});
+// userSchema.pre("save", function () {
+//   console.log("presave", this);
+//   const mystr = mykey.update("abc", "utf8", "hex");
+//   mystr += mykey.final("hex");
+
+//   console.log(mystr);
+//   this.password = mystr;
+// });
 
 module.exports = mongoose.model("Users", userSchema);
