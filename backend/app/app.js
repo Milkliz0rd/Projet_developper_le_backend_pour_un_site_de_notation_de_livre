@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 });
 //Middleware pour définir les routes
 app.use("/api", require("../routes/book.routes"));
-app.use("/auth", require("../routes/user.routes"));
+app.use("/api/auth", require("../routes/user.routes"));
 //Middleware pour gérer les routes inexistantes
 app.use((req, res) => {
   res.status(404).json({ error: "Route non trouvé" });

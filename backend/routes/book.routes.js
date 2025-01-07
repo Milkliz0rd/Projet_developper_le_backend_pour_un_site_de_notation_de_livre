@@ -1,4 +1,5 @@
 const express = require("express");
+const auth = require("../middleware/auth")
 const {
   setBooks,
   getBooks,
@@ -7,11 +8,12 @@ const {
 } = require("../controllers/book.controllers");
 const router = express.Router();
 
-router.get("/books", getBooks);
 
-router.post("/books", setBooks);
+router.get("/books", auth, getBooks);
 
-router.put("/books/:id", updateBooks);
+router.post("/books",auth, setBooks);
 
-router.delete("/book/:id", removeBooks);
+router.put("/books/:id",auth, updateBooks);
+
+router.delete("/book/:id",auth, removeBooks);
 module.exports = router;
