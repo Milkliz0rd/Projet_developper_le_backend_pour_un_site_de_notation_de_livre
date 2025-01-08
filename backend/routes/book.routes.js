@@ -6,15 +6,14 @@ const {
   getBooks,
   updateBooks,
   removeBooks,
+  getBook,
 } = require("../controllers/book.controllers");
 const router = express.Router();
 
 
-router.get("/books", getBooks);
-
-router.post("/books", auth, multer, setBooks);
-
-router.put("/books/:id",auth, multer, updateBooks);
-
-router.delete("/book/:id",auth, removeBooks);
+router.get("/", getBooks);
+router.get("/",getBook)
+router.post("/", auth, multer, setBooks);
+router.put("/:id",auth, multer, updateBooks);
+router.delete("/:id",auth, removeBooks);
 module.exports = router;

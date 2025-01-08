@@ -9,7 +9,9 @@ module.exports.setBooks = async (req, res) => {
   const book = new Book({
     ...bookObject,
     userId: req.auth.userId,
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+    ratings: [],
+    averageRating: 0,
   });
   book
     .save()
@@ -19,17 +21,15 @@ module.exports.setBooks = async (req, res) => {
 
 module.exports.getBooks = async (req, res) => {
   Book.find()
-    .then((books) => res.status(200).json({ books }))
+    .then((books) => res.status(200).json( books ))
     .catch((error) => res.status(400).json({ error }));
 };
 
 module.exports.getBook = async (req, res) => {
   Book.findOne({ _id: req.params.id })
-    .then((book) => res.status(200).json({ books : book }))
+    .then((book) => res.status(200).json( book ))
     .catch((error) => res.status(404).json({ error }));
 };
-
-module.exports.getBooksBestRating = async (req, res) => {};
 
 module.exports.updateBooks = async (req, res) => {
   const bookObject = req.file ? {

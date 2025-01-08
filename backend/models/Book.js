@@ -4,14 +4,13 @@ const bookSchema = mongoose.Schema({
   userId: {
     type: String,
     required: true,
-    unique: true,
     description: "Identifiant MongoDB unique de l'utilisateur",
   },
   title: { type: String, required: true, description: "Titre du livre" },
   author: { type: String, required: true, description: "Auteur du livre" },
   imageUrl: {
     type: String,
-    // required: true,
+
     description: "Illustration/couverture du livre",
   },
   year: {

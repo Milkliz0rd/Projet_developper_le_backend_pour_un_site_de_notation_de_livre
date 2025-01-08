@@ -15,7 +15,7 @@ app.use((req, res, next) => {
   next();
 });
 //Middleware pour définir les routes
-app.use("/api", require("../routes/book.routes"));
+app.use("/api/books", require("../routes/book.routes"));
 app.use("/api/auth", require("../routes/user.routes"));
 app.use("/images", express.static(path.join(__dirname, '../images')))
 //Middleware pour gérer les routes inexistantes
