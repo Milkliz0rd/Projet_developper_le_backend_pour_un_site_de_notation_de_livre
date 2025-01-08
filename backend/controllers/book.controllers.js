@@ -31,6 +31,42 @@ module.exports.getBook = async (req, res) => {
     .catch((error) => res.status(404).json({ error }));
 };
 
+module.exports.addRating = async (req, res) => {
+  const { userId, rating } = req.body;
+
+  // Vérifiez que la note est valide
+  if (rating < 0 || rating > 5) {
+    return res.status(400).json({ message: "La note doit être entre 0 et 5." });
+  }
+
+  Book.findOne({ _id: req.params.id })
+    .then((book) => {
+      if (!book) {
+        return res.status(404).json({ message: "Livre non trouvé." });
+      }
+
+      // Vérifiez si l'utilisateur a déjà noté le livre
+      const existingRating = book.ratings.find((r) => r.userId === userId);
+      if (existingRating) {
+        return res.status(400).json({ message: "Vous avez déjà noté ce livre." });
+      }
+
+      // Ajoutez la nouvelle note
+      book.ratings.push({ userId, grade: rating });
+
+      // Recalculez la note moyenne
+      const totalRating = book.ratings.reduce((acc, r) => acc + r.grade, 0);
+      book.averageRating = totalRating / book.ratings.length;
+
+      // Sauvegardez le livre
+      book
+        .save()
+        .then(() => res.status(200).json(book))
+        .catch((error) => res.status(400).json({ error }));
+    })
+    .catch((error) => res.status(500).json({ error }));
+}
+
 module.exports.updateBooks = async (req, res) => {
   const bookObject = req.file ? {
     ...JSON.parse(req.body.thing),
