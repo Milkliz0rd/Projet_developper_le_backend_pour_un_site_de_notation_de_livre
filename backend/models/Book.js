@@ -11,7 +11,7 @@ const bookSchema = mongoose.Schema({
   author: { type: String, required: true, description: "Auteur du livre" },
   imageUrl: {
     type: String,
-    required: true,
+    // required: true,
     description: "Illustration/couverture du livre",
   },
   year: {

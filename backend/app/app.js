@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-
+const path = require("path")
 const app = express();
 
 //Middleware pour les cors afin d'accepter les données d'un autre server
@@ -17,6 +17,7 @@ app.use((req, res, next) => {
 //Middleware pour définir les routes
 app.use("/api", require("../routes/book.routes"));
 app.use("/api/auth", require("../routes/user.routes"));
+app.use("/images", express.static(path.join(__dirname, '../images')))
 //Middleware pour gérer les routes inexistantes
 app.use((req, res) => {
   res.status(404).json({ error: "Route non trouvé" });

@@ -1,5 +1,6 @@
 const express = require("express");
 const auth = require("../middleware/auth")
+const multer = require("../middleware/multer-config")
 const {
   setBooks,
   getBooks,
@@ -9,11 +10,11 @@ const {
 const router = express.Router();
 
 
-router.get("/books", auth, getBooks);
+router.get("/books", getBooks);
 
-router.post("/books",auth, setBooks);
+router.post("/books", auth, multer, setBooks);
 
-router.put("/books/:id",auth, updateBooks);
+router.put("/books/:id",auth, multer, updateBooks);
 
 router.delete("/book/:id",auth, removeBooks);
 module.exports = router;
