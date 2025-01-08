@@ -10,8 +10,6 @@ module.exports.setBooks = async (req, res) => {
     ...bookObject,
     userId: req.auth.userId,
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-    ratings: [],
-    averageRating: 0,
   });
   book
     .save()

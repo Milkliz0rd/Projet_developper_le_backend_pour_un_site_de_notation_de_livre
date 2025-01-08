@@ -34,7 +34,9 @@ const bookSchema = mongoose.Schema({
       },
     },
   ],
-  averageRating: { type: Number, description: "note moyenne du livre" },
+  averageRating: { type: Number, 
+    //Mettre un code pour dire que l'on doit recalculer la moyenne à chaque modification de note
+    description: "note moyenne du livre" },
 });
 
 module.exports = mongoose.model("Books", bookSchema);
