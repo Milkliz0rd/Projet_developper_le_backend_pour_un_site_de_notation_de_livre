@@ -1,5 +1,6 @@
 const fs = require("fs")
 const Book = require("../models/Book");
+const { error } = require("console");
 
 
 module.exports.setBooks = async (req, res) => {
@@ -52,9 +53,9 @@ module.exports.addRating = async (req, res) => {
       // Ajoutez la nouvelle note
       book.ratings.push({ userId, grade: rating });
 
-      // Recalculez la note moyenne
-      const totalRating = book.ratings.reduce((acc, r) => acc + r.grade, 0);
-      book.averageRating = totalRating / book.ratings.length;
+      // // Recalculez la note moyenne
+      // const totalRating = book.ratings.reduce((acc, r) => acc + r.grade, 0);
+      // book.averageRating = totalRating / book.ratings.length;
 
       // Sauvegardez le livre
       book
@@ -63,6 +64,17 @@ module.exports.addRating = async (req, res) => {
         .catch((error) => res.status(400).json({ error }));
     })
     .catch((error) => res.status(500).json({ error }));
+}
+
+module.exports.bestRatingsBooks = async(req, res) =>{
+  console.log("SA");
+  
+  Book.find()
+  .sort({averageRating: -1})
+  .limit(3)
+  .then((books) => 
+     res.status(200).json(books))
+  .catch(error => res.status(400).json({error}))
 }
 
 module.exports.updateBooks = async (req, res) => {
