@@ -39,4 +39,30 @@ const bookSchema = mongoose.Schema({
     description: "note moyenne du livre" },
 });
 
+//Hook pour recalculer la moyenne avant chaque save()
+bookSchema.pre("save", (next) => {
+if (this.rating && this.rating.length > 0) {
+  const totalRating = this.rating.reduce((acc, r) => acc + r.grade, 0)
+  this.averageRating = totalRating / this.rating.length
+}else{
+  this.averageRating = 0
+}
+next()
+})
+
+//Hook pour recalculer la moyenne après l'update
+bookSchema.pre("findOneAndUpdate", function (next) {
+  const update = this.getUpdate();
+  if (update.$set && update.$set.ratings) {
+    const ratings = update.$set.ratings;
+    if (ratings.length > 0) {
+      const totalRating = ratings.reduce((acc, r) => acc + r.grade, 0);
+      update.$set.averageRating = totalRating / ratings.length;
+    } else {
+      update.$set.averageRating = 0;
+    }
+  }
+  next();
+});
+
 module.exports = mongoose.model("Books", bookSchema);
