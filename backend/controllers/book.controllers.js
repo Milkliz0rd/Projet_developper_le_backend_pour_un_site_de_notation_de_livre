@@ -1,9 +1,11 @@
 const fs = require("fs")
 const Book = require("../models/Book");
-const { error } = require("console");
+
 
 
 module.exports.setBooks = async (req, res) => {
+  console.log(req.file);
+  
   const bookObject = JSON.parse(req.body.book);
   delete bookObject._id;
   delete bookObject._userId;
@@ -78,18 +80,20 @@ module.exports.bestRatingsBooks = async(req, res) =>{
 }
 
 module.exports.updateBooks = async (req, res) => {
+  console.log(req.file);
+  
   const bookObject = req.file ? {
-    ...JSON.parse(req.body.thing),
+    ...JSON.parse(req.body.book),
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
   } : {...req.body}
 
   delete bookObject._userId;
   Book.findOne({_id: req.params.id})
-  .then((Book) => {
-    if(Book.userId != req.auth.userId) {
+  .then((book) => {
+    if(book.userId != req.auth.userId) {
       res.status(401).json({message: "Non-autorisé"})
     }else{
-      Book.updateOne({_id: req.params.id}, {...thingObject, _id: req.params.id})
+      Book.updateOne({_id: req.params.id}, {...bookObject, _id: req.params.id})
       .then(() => res.status(200).json({message: 'Livre Modifié'}))
       .catch(error => res.status(401).json({error}))
     }
