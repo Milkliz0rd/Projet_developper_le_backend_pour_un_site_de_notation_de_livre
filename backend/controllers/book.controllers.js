@@ -14,15 +14,16 @@ module.exports.setBooks = async (req, res) => {
     // créé un nouveau livre dans notre base de donnée en se basant sur le schema de Book que l'on récupère dans "const Book = require('../models/Book');"
     ...bookObject,
     userId: req.auth.userId,
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${
-      req.file.filename
-    }`,
+    imageUrl: req.file
+      ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+      : '',
     // dans ...bookObject, c'est le spread Operator qui destructure bookObject pour récupéré les propriété à mettre dans le nouvel objet book
     // on défini userId en lui spécifiant que c'est le userId de la personne authentifier qui sera ajouter sur cet ligne
-    // on définit l'url de l'image associée au livre. elle est construite à partir des élément suivants:
+    // si req.file, on définit l'url de l'image associée au livre. elle est construite à partir des élément suivants:
     // req.protocol: Protocole utilisé (http ou https),
     // req.get('host'): récupère le nom de l'hôte (ex: localhost:4000),
     // req.file.filname: nom du fichier télécharger (généré par multer),
+    // sinon, on applique une chaine caractère vide
   });
   book
     .save()
