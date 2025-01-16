@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); // Ici on fait appel à la bibliothèque mongoose pour interagire avec mongoDB
 
 const bookSchema = mongoose.Schema({
+  // On définit le schéma pour un livre dans la base de donné de MongoDB
   userId: {
     type: String,
     required: true,
@@ -35,7 +36,6 @@ const bookSchema = mongoose.Schema({
   ],
   averageRating: {
     type: Number,
-    //Mettre un code pour dire que l'on doit recalculer la moyenne à chaque modification de note
     description: 'note moyenne du livre',
   },
 });
