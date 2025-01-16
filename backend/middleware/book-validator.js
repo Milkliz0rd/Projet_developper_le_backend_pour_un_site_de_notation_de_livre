@@ -1,6 +1,8 @@
 const Book = require('../models/Book');
 
 async function bookValidator(req, res, next) {
+  console.log(req.body);
+
   const bookObject = JSON.parse(req.body?.book || '{}');
 
   delete bookObject._id;
