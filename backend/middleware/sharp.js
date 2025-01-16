@@ -2,6 +2,9 @@ const sharp = require('sharp'); // Importation du module 'sharp' qui permet de m
 const fs = require('fs'); // Importation du module 'fs' qui permet d'interagir avec le système de fichiers (lecture, écriture, création de fichiers ou répertoires)
 
 async function sharpImage(req, res, next) {
+  if (!req.file) {
+    return next();
+  }
   // fonction qui va nous permettre de convertire nous fichier image que l'on va recevoir sur nos formulaire en webp
   fs.access('./images', (error) => {
     if (error) {
